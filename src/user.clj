@@ -18,3 +18,10 @@
 
 (defn gen-prj []
   (-main ""))
+
+(comment 
+  (prn "hello")
+
+  {}
+  ;;
+  )

@@ -1,6 +1,5 @@
 (ns deps-new.core
   (:require [clojure.java.io :as io]
-            [clojure.pprint :refer [pprint]]
             [clojure.edn :as edn]))
 
 (def std-prj-layout
@@ -36,8 +35,8 @@
 (defn -main [& args]
   (prn "main invoked"))
 
-
 (comment
+
   (in-ns 'deps-new.core)
   (def dirs (merge std-prj-layout {:root-dir "/Users/btstout/repl"}))
 
