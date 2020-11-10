@@ -1,4 +1,5 @@
 (ns deps-new.ns
+  "Tools for generating ns forms for the purpose of source code generation."
   (:require [clojure.pprint :as pp]))
 
 (def requires {:java-io '[clojure.java.io :as io]
@@ -19,8 +20,12 @@
   `(ns ~name
      (:require ~@deps)))
 
-(defn mk-require 
+(defn mk-require
+  "Generate a namespace form as a string, 
+   with the intention of writing this string to a source file."
   [ns-name namespaces]
+  {:pre [(symbol? ns-name)
+         (vector? namespaces)]}
   (pp-code
    `(mk-ns ~ns-name ~(select-deps namespaces))))
 
