@@ -9,12 +9,15 @@
    (str/replace "-" "_")
    (str/replace "." "/")))
 
-(defn prj-dirs [root ns-name]
+(defn prj-dirs
+  "Define the project directory layout. Returns a map of project directories."
+  [root ns-name]
   (let [n-ns (normalize-ns-name ns-name)]
     {:src (str root "/src/" n-ns)
      :res (str root "/resources")
      :dev (str root "/dev")
-     :test (str root "/test/" n-ns)}))
+     :test (str root "/test/" n-ns)
+     :test-res (str root "/test/resources/")}))
 
 (defn load-res [res]
   (->
@@ -47,12 +50,6 @@
       (let [in (-> res io/resource io/reader)
             out (io/as-file (mk-path (str root-dir "/" path) res))]
         (io/copy in out)))))
-
-
-;; (defn prj-tree [root ns-name]
-;;   (let [src-path (str root "/src/" (normalize-ns-name ns-name))]
-;;     [(str src-path "/core.clj")]))
-
 
 (comment
   (def root (System/getProperty "user.home"))

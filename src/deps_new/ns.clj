@@ -3,7 +3,8 @@
   (:require [deps-new.codegen :refer [pp-code]]))
 
 (def requires {:java-io '[clojure.java.io :as io]
-               :shell '[clojure.java.shell :as shell]})
+               :shell '[clojure.java.shell :as shell]
+               :cli '[clojure.tools.cli :refer [parse-opts]]})
 
 (defn select-deps [deps]
   (->>
@@ -33,7 +34,7 @@
   (pp-code `(mk-ns sample ~(select-deps [:java-io :shell])))
 
   ;; Intended usage
-  (mk-require 'sample [:java-io :shell])
-  
+  (mk-require 'deps-new.ns [:java-io :shell :cli])
+
   ;;
   )
