@@ -12,12 +12,10 @@
    ["-r" "--repo repo-name" "Repository Name (required)"]
    ["-h" "--help"]])
 
-(def required-opts #{:namespace :repo})
-
 (defn missing-required?
   "Returns true if opts is missing any of the required-opts"
   [opts]
-  (not-every? opts required-opts))
+  (not-every? opts #{:namespace :repo}))
 
 (defn run [options]
   (let [{:keys [namespace path repo]} options]

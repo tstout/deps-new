@@ -1,4 +1,6 @@
 (ns user)
+;; Add your REPL customizations here.
+
 
 ;; Trace fns borrowed from https://lambdaisland.com/blog/2019-12-17-advent-of-parens-17-trace-untrace
 (defn trace! [v]
