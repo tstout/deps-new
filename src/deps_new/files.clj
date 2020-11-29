@@ -17,7 +17,8 @@
      :res (str root "/resources")
      :dev (str root "/dev")
      :test (str root "/test/" n-ns)
-     :test-res (str root "/test/resources/")}))
+     :test-res (str root "/test/resources/")
+     :root root}))
 
 (defn load-res [res]
   (->
