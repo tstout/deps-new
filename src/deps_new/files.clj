@@ -32,10 +32,11 @@
    load-res
    edn/read-string))
 
-;; TODO - this should return the prj-dirs map
 (defn mk-dirs [root ns-name]
-  (doseq [d (vals (prj-dirs root ns-name))]
-    (io/make-parents (str d "/_"))))
+  (let [dirs (prj-dirs root ns-name)]
+    (doseq [d (vals dirs)]
+      (io/make-parents (str d "/_")))
+    dirs))
 
 (def std-prj-layout
   {:dirs ["src" "test" "resources"]})
@@ -47,16 +48,17 @@
   (str root "/" fname))
 
 (defn cp-res [dirs res-src dest]
-  (let [in (-> 
-            res-src 
-            io/resource 
+  (let [in (->
+            res-src
+            io/resource
             io/reader)
-        out (-> 
-             dest 
-             dirs 
+        out (->
+             dest
+             dirs
              (str "/" res-src)
              io/as-file)]
-    (io/copy in out)))
+    (io/copy in out)
+    dirs))
 
 (defn mk-files [opts]
   (let [{:keys [files root-dir]} opts]
@@ -69,16 +71,20 @@
   (def root (str (System/getProperty "user.home") "/test-prj"))
   (def dirs (prj-dirs root "foo.bar-t"))
 
-  (mk-dirs root "foo.bar-t")
-  (cp-res dirs "deps.edn" :root)
+  (->
+   (mk-dirs root "foo.bar-t")
+   (cp-res "deps.edn" :root)
+   (cp-res "user.clj" :dev))
 
   (io/resource "deps.edn")
-  
+
   (macroexpand-1 '(->
                    res
                    io/resource
                    slurp))
 
+  (io/resource "user.clj")
+  
 
   (io/make-parents (str root "/test/test-dir1/test-dir2/test-dir3"))
 

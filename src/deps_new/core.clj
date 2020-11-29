@@ -1,7 +1,7 @@
 (ns deps-new.core
   (:require [clojure.java.io :as io]
             [clojure.edn :as edn]
-            [deps-new.files :refer [mk-dirs]]
+            [deps-new.files :refer [mk-dirs cp-res]]
             [clojure.tools.cli :refer [parse-opts]])
   (:gen-class))
 
@@ -13,17 +13,16 @@
    ["-h" "--help"]])
 
 (defn missing-required?
-  "Returns true if opts is missing any of the required-opts"
+  "Returns true if opts is missing any of the required options"
   [opts]
   (not-every? opts #{:namespace :repo}))
 
 (defn run [options]
   (let [{:keys [namespace path repo]} options]
-    (println (format "generate for namespace %s :path %s :repo %s"
-                     namespace
-                     path
-                     repo))
-    (mk-dirs (str path "/" repo) namespace)))
+    (->
+     (mk-dirs (str path "/" repo) namespace)
+     (cp-res "deps.edn" :root)
+     (cp-res "user.clj" :dev))))
 
 (defn -main [& args]
   (let [{:keys [options
