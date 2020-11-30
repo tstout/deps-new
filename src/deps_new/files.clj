@@ -38,15 +38,7 @@
       (io/make-parents (str d "/_")))
     dirs))
 
-(def std-prj-layout
-  {:dirs ["src" "test" "resources"]})
-
-(def std-files [["src" "user.clj"]
-                ["." "deps.edn"]])
-
-(defn mk-path [root fname]
-  (str root "/" fname))
-
+;; TODO make a spec out of the dirs map.
 (defn cp-res [dirs res-src dest]
   (let [in (->
             res-src
@@ -59,13 +51,6 @@
              io/as-file)]
     (io/copy in out)
     dirs))
-
-(defn mk-files [opts]
-  (let [{:keys [files root-dir]} opts]
-    (doseq [[path res] files]
-      (let [in (-> res io/resource io/reader)
-            out (io/as-file (mk-path (str root-dir "/" path) res))]
-        (io/copy in out)))))
 
 (comment
   (def root (str (System/getProperty "user.home") "/test-prj"))
@@ -84,7 +69,7 @@
                    slurp))
 
   (io/resource "user.clj")
-  
+
 
   (io/make-parents (str root "/test/test-dir1/test-dir2/test-dir3"))
 
