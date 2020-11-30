@@ -1,52 +1,42 @@
 (ns deps-new.core
   (:require [clojure.java.io :as io]
-            [clojure.pprint :refer [pprint]]
-            [clojure.edn :as edn]))
+            [clojure.edn :as edn]
+            [deps-new.files :refer [mk-dirs cp-res]]
+            [clojure.tools.cli :refer [parse-opts]])
+  (:gen-class))
 
-(def std-prj-layout
-  {:dirs ["src" "test" "resources"]})
+(def cli-options
+  [["-n" "--namespace NS" "Project root namespace (required)"]
+   ["-p" "--path RP" "Specify root path"
+    :default "."]
+   ["-r" "--repo repo-name" "Repository Name (required)"]
+   ["-h" "--help"]])
 
-(def std-files [["src" "user.clj"]
-                ["." "deps.edn"]])
+(defn missing-required?
+  "Returns true if opts is missing any of the required options"
+  [opts]
+  (not-every? opts #{:namespace :repo}))
 
-(defn load-res [res]
-  (-> res io/resource slurp))
-
-(defn load-edn-res [res]
-  (->
-   res
-   load-res
-   edn/read-string))
-
-(defn mk-dirs [opts]
-  (let [{:keys [dirs root-dir]} opts]
-    (doseq [d dirs]
-      (io/make-parents (str root-dir "/" d "/stub")))))
-
-(defn mk-path [root fname]
-  (str root "/" fname))
-
-(defn mk-files [opts]
-  (let [{:keys [files root-dir]} opts]
-    (doseq [[path res] files]
-      (let [in (-> res io/resource io/reader)
-            out (io/as-file (mk-path (str root-dir "/" path) res))]
-        (io/copy in out)))))
+(defn run [options]
+  (let [{:keys [namespace path repo]} options]
+    (->
+     (mk-dirs (str path "/" repo) namespace)
+     (cp-res "deps.edn" :root)
+     (cp-res "user.clj" :dev))))
 
 (defn -main [& args]
-  (prn "main invoked"))
+  (let [{:keys [options
+                arguments
+                summary
+                errors]} (parse-opts args cli-options)]
+    (cond
+      errors (println errors)
+      (missing-required? options) (do
+                                    (println "Missing required arguments - Usage:")
+                                    (println summary))
+      (:help options) (println summary)
+      :else (run options))))
 
-
-(comment
-  (in-ns 'deps-new.core)
-  (def dirs (merge std-prj-layout {:root-dir "/Users/btstout/repl"}))
-
-  (def files (merge dirs {:files std-files}))
-
-  (mk-files files)
-
-
-  (mk-dirs dirs))
 
 
 

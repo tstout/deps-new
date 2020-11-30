@@ -1,6 +1,13 @@
 {:paths ["resources" "src"]
  :deps {org.clojure/tools.cli {:mvn/version "0.3.5"}}
- :aliases {:test
+ :aliases {:dev {:extra-paths ["dev"]}
+           :deps-new {:main-opts ["-m" "deps-new.core"]}
+           :test
+           {:extra-paths ["test" "test/resources"]
+            :extra-deps {org.clojure/test.check {:mvn/version "0.10.0"}
+                         expectations/clojure-test {:mvn/version "RELEASE"}
+                         pjstadig/humane-test-output {:mvn/version "0.10.0"}}}
+           :runner
            {:extra-deps {com.cognitect/test-runner
                          {:git/url "https://github.com/cognitect-labs/test-runner.git"
                           :sha "209b64504cb3bd3b99ecfec7937b358a879f55c1"}
