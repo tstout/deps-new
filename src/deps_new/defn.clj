@@ -11,10 +11,11 @@
 
 (comment
   (macroexpand-1 '(mk-fn foo [a b c] (println "foo")))
-  
+
   (mk-defn 'foo '(a b c) '(println "foo"))
+
+  (pp-code '(defn foo [a b c] (println "foo")))
   
   (mk-defn 'bar [] '(println "bar"))
-
   ;;
   )

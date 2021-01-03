@@ -14,5 +14,12 @@
 (comment
   (pp-code '(defn foo [] (println "foo")))
 
+  (macroexpand-1 '#(prn (str "hello " %)))
+  
+  (type #'pp-code)
+  
+  (macroexpand-1 #'pp-code)
+  
+  
   ;;
   )

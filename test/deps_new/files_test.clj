@@ -27,7 +27,7 @@
 
 (defexpect generates-expected-directories
   (mk-dirs root test-ns)
-  (doseq [d (vals dirs)]
+  (doseq [d (vals (:dirs dirs))]
     (expect true (file-exists d) (format "Expected directory %s to exist" d))))
 
 (comment

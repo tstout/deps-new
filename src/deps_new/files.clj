@@ -10,15 +10,17 @@
    (str/replace "." "/")))
 
 (defn prj-dirs
-  "Define the project directory layout. Returns a map of project directories."
+  "Define the project directory layout. Returns a map of project directories and root ns."
   [root ns-name]
   (let [n-ns (normalize-ns-name ns-name)]
-    {:src (str root "/src/" n-ns)
-     :res (str root "/resources")
-     :dev (str root "/dev")
-     :test (str root "/test/" n-ns)
-     :test-res (str root "/test/resources/")
-     :root root}))
+    {:dirs {:src (str root "/src/" n-ns)
+            :res (str root "/resources")
+            :dev (str root "/dev")
+            :test (str root "/test/" n-ns)
+            :test-res (str root "/test/resources/")
+            :root root}
+     :namespaces {:ns-org ns-name
+                  :ns-normalized n-ns}}))
 
 (defn load-res [res]
   (->
@@ -34,7 +36,7 @@
 
 (defn mk-dirs [root ns-name]
   (let [dirs (prj-dirs root ns-name)]
-    (doseq [d (vals dirs)]
+    (doseq [d (vals (:dirs dirs))]
       (io/make-parents (str d "/_")))
     dirs))
 
