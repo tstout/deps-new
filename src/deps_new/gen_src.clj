@@ -1,37 +1,35 @@
 (ns deps-new.gen-src
   (:require [deps-new.codegen :refer [pp-code]]
-            [deps-new.defn :refer [mk-defn mk-fn]]
-            [deps-new.ns :refer  [mk-require]]))
+            [deps-new.defn :refer [mk-defn mk-main]]
+            [deps-new.ns :refer  [mk-ns]]))
 
+;; TODO - revist this with nested map destructuring...
 (defn gen-main [opt]
-  (let [{:keys [dirs namespaces]} opt]
-    ))
-
-
-(mk-require 'deps-new.ns [:java-io :shell :cli])
-
-(def hello "hello")
-
-(type 'hello)
-
-(meta (var hello))
-
-
-(var hello)
-
-((juxt take drop) 3 (range 9))
-
-((juxt take drop) 3)
-
-(take 3)
-
-(drop 3)
-
-(dotimes [x 10]
-  (prn x))
+  (let [src (-> :dirs
+                opt
+                :src)
+        ns-org (-> :namespaces
+                   opt
+                   :ns-org
+                   symbol)]
+    (str (mk-ns ns-org :cli)
+         \newline
+         (mk-main))))
 
 
 
-(type #'hello)
+(comment
 
-(macroexpand-1 #'hello)
+
+  (require '[deps-new.files :refer [prj-dirs]])
+  (require '[clojure.pprint :as pp])
+
+  (def dirs (prj-dirs
+             (str (System/getProperty "user.home") "/test-prj")
+             "foo.bar-t"))
+
+  ;; intended usage
+  (gen-main dirs)
+
+  ;;
+  )

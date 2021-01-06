@@ -23,16 +23,14 @@
                   :ns-normalized n-ns}}))
 
 (defn load-res [res]
-  (->
-   res
-   io/resource
-   slurp))
+  (-> res
+      io/resource
+      slurp))
 
 (defn load-edn-res [res]
-  (->
-   res
-   load-res
-   edn/read-string))
+  (-> res
+      load-res
+      edn/read-string))
 
 (defn mk-dirs [root ns-name]
   (let [dirs (prj-dirs root ns-name)]
@@ -42,15 +40,13 @@
 
 ;; TODO make a spec out of the dirs map.
 (defn cp-res [dirs res-src dest]
-  (let [in (->
-            res-src
-            io/resource
-            io/reader)
-        out (->
-             dest
-             dirs
-             (str "/" res-src)
-             io/as-file)]
+  (let [in (-> res-src
+               io/resource
+               io/reader)
+        out (-> dest
+                dirs
+                (str "/" res-src)
+                io/as-file)]
     (io/copy in out)
     dirs))
 

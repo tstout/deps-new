@@ -7,19 +7,24 @@
     (binding [pp/*print-suppress-namespaces* true]
       (f))))
 
+;; (defn pp-code [code]
+;;   (with-pp (fn []
+;;              (pp/with-pprint-dispatch 
+;;               pp/code-dispatch 
+;;               (pp/pprint (macroexpand-1 code))))))
+
 (defn pp-code [code]
-  (with-pp #(pp/pprint (macroexpand-1 code))))
+  (with-pp (fn []
+             (pp/with-pprint-dispatch
+               pp/code-dispatch
+               (pp/pprint code)))))
+
+
 
 
 (comment
-  (pp-code '(defn foo [] (println "foo")))
-
-  (macroexpand-1 '#(prn (str "hello " %)))
+  (pp-code '(defn foo "this is a test of doc string" [] (println "foo")))
   
-  (type #'pp-code)
-  
-  (macroexpand-1 #'pp-code)
-  
-  
+  (pp-code '(defn foo "A function for doing all kinds of things" [] (prn "hello") (prn "goodbye")))
   ;;
   )
