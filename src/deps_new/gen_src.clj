@@ -4,6 +4,19 @@
             [deps-new.ns :refer  [mk-ns]]))
 
 ;; TODO - revist this with nested map destructuring...
+;; (defn gen-main [opt]
+;;   (let [src (-> :dirs
+;;                 opt
+;;                 :src)
+;;         ns-org (-> :namespaces
+;;                    opt
+;;                    :ns-org
+;;                    symbol)]
+;;     (-> (str (mk-ns ns-org :cli)
+;;          \newline
+;;          (mk-main))
+;;         pp-code)))
+
 (defn gen-main [opt]
   (let [src (-> :dirs
                 opt
@@ -12,14 +25,13 @@
                    opt
                    :ns-org
                    symbol)]
-    (str (mk-ns ns-org :cli)
-         \newline
-         (mk-main))))
-
-
+    (-> (mk-ns ns-org :cli)
+        (mk-main))
+        pp-code))
 
 (comment
 
+  (take 10 (range))
 
   (require '[deps-new.files :refer [prj-dirs]])
   (require '[clojure.pprint :as pp])
