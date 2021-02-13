@@ -59,18 +59,17 @@
     dirs))
 
 ;; TODO make a spec out of the dirs map.
-(defn cp-res [dirs res-src dest]
-  (println dirs)
+(defn cp-res [prj res-src dest]
   (let [in (-> res-src
                io/resource
                io/reader)
         out (-> :dirs
-                dirs
+                prj
                 dest
                 (str "/" res-src)
                 io/as-file)]
     (io/copy in out)
-    dirs))
+    prj))
 
 (comment
   (def root (str (System/getProperty "user.home") "/test-prj"))
