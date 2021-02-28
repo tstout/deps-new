@@ -14,8 +14,8 @@
        vals))
 
 (defn mk-ns [name & deps]
-  `(ns ~name
-     (:require ~@(apply select-deps deps))))
+  [`(ns ~name
+     (:require ~@(apply select-deps deps)))])
 
 (comment
   (select-deps :java-io :shell)
@@ -24,6 +24,7 @@
   (->
    (mk-ns 'foo-bar :shell :java-io)
    pp-code)
+
 
   ;;
   )

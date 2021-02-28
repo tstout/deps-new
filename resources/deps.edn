@@ -5,7 +5,7 @@
            :test
            {:extra-paths ["test" "test/resources"]
             :extra-deps {org.clojure/test.check {:mvn/version "0.10.0"}
-                         expectations/clojure-test {:mvn/version "RELEASE"}
+                         expectations/clojure-test {:mvn/version "1.2.1"}
                          pjstadig/humane-test-output {:mvn/version "0.10.0"}}}
            :runner
            {:extra-deps {com.cognitect/test-runner

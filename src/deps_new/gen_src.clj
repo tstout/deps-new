@@ -1,47 +1,33 @@
 (ns deps-new.gen-src
   (:require [deps-new.codegen :refer [pp-code]]
-            [deps-new.defn :refer [mk-defn mk-main]]
+            [deps-new.defn :refer [mk-main]]
             [deps-new.ns :refer  [mk-ns]]))
 
-;; TODO - revist this with nested map destructuring...
-;; (defn gen-main [opt]
-;;   (let [src (-> :dirs
-;;                 opt
-;;                 :src)
-;;         ns-org (-> :namespaces
-;;                    opt
-;;                    :ns-org
-;;                    symbol)]
-;;     (-> (str (mk-ns ns-org :cli)
-;;          \newline
-;;          (mk-main))
-;;         pp-code)))
 
-(defn gen-main [opt]
-  (let [src (-> :dirs
-                opt
-                :src)
-        ns-org (-> :namespaces
-                   opt
-                   :ns-org
-                   symbol)]
-    (-> (mk-ns ns-org :cli)
-        (mk-main))
-        pp-code))
+;; TODO - Combine this with codegen ns
+
+(defn gen-main
+  "Create a collection of source code lines representing the main source file."
+  [prj]
+  (let [ns-org (-> :namespaces prj :ns-org symbol)]
+    (->> (mk-ns ns-org :cli)
+         mk-main
+         (map pp-code))))
 
 (comment
-
-  (take 10 (range))
-
   (require '[deps-new.files :refer [prj-dirs]])
-  (require '[clojure.pprint :as pp])
 
-  (def dirs (prj-dirs
-             (str (System/getProperty "user.home") "/test-prj")
-             "foo.bar-t"))
+  (def prj (prj-dirs
+            (str (System/getProperty "user.home") "/test-prj")
+            "foo.bar-t"))
 
   ;; intended usage
-  (gen-main dirs)
+  (gen-main prj)
+
+  ;; Create a single string of source code
+  (->> prj
+       gen-main
+       (apply str))
 
   ;;
   )
