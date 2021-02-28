@@ -1,7 +1,8 @@
 (ns deps-new.files
   (:require [clojure.java.io :as io]
             [clojure.string :as str]
-            [clojure.edn :as edn]))
+            [clojure.edn :as edn]
+            [deps-new.gen-src :refer [gen-main]]))
 
 (defn normalize-ns-name [ns-name]
   (-> ns-name
@@ -51,6 +52,12 @@
   (-> res
       load-res
       edn/read-string))
+
+(defn write-main [prj]
+  (->> prj
+       gen-main
+       (apply str)
+       (spit (gen-file prj :src "core.clj"))))
 
 (defn mk-dirs [root ns-name]
   (let [dirs (prj-dirs root ns-name)]
