@@ -1,20 +1,19 @@
-(ns deps-new.defn
-  (:require [deps-new.codegen :refer [pp-code]]))
+(ns deps-new.defn)
 
 (defmacro mk-fn [name args body]
   `(defn ~name [~@args]
      ~body))
 
 (defn mk-defn [name args body]
-  (pp-code
-   `(mk-fn ~name ~args ~body)))
+  `(mk-fn ~name ~args ~body))
+
+(defn mk-main [code-vec]
+  (conj 
+   code-vec 
+   '(defn -main [& args] (println "hello world"))))
 
 (comment
-  (macroexpand-1 '(mk-fn foo [a b c] (println "foo")))
-  
-  (mk-defn 'foo '(a b c) '(println "foo"))
-  
-  (mk-defn 'bar [] '(println "bar"))
+  (mk-main [])
 
   ;;
   )
