@@ -1,7 +1,7 @@
 (ns deps-new.files-test
   (:require [expectations.clojure.test :refer [defexpect expect expecting]]
             [clojure.test :refer [use-fixtures]]
-            [deps-new.files :refer [mk-dirs prj-dirs]]
+            [deps-new.files :refer [mk-dirs prj-dirs file-exists]]
             [clojure.java.io :as io]))
 
 (def root (str (System/getProperty "user.home") "/test-prj"))
@@ -21,9 +21,6 @@
   (delete-dirs (io/as-file root)))
 
 (use-fixtures :once dir-cleanup)
-
-(defn file-exists [x]
-  (-> x io/file .exists))
 
 (defexpect generates-expected-directories
   (mk-dirs root test-ns)

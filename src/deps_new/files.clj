@@ -2,12 +2,16 @@
   (:require [clojure.java.io :as io]
             [clojure.string :as str]
             [clojure.edn :as edn]
+            [deps-new.codegen :refer [pp-code]]
             [deps-new.gen-src :refer [gen-main]]))
 
 (defn normalize-ns-name [ns-name]
   (-> ns-name
       (str/replace "-" "_")
       (str/replace "." "/")))
+
+(defn file-exists [x]
+  (-> x io/file .exists))
 
 (defn prj-dirs
   "Define the project directory layout. Returns a map of project directories and root ns.
@@ -78,9 +82,24 @@
     (io/copy in out)
     prj))
 
+(defn add-dep [dep]
+  (if-let [deps (some-> "./deps.edn" 
+                      io/resource 
+                      io/reader 
+                      slurp
+                      edn/read-string)]
+    (->> deps 
+         (merge-with into {:deps dep})
+         pp-code
+         (spit "./deps.edn"))
+    (throw (Exception. "Could not find ./deps.edn"))))
+
+
 (comment
   (def root (str (System/getProperty "user.home") "/test-prj"))
   (def dirs (prj-dirs root "foo.bar-t"))
+
+  (some-> "./deps.edn" io/resource io/reader)
 
   (gen-file dirs :src "main.clj")
 
@@ -88,6 +107,12 @@
    (mk-dirs root "foo.bar-t")
    (cp-res "deps.edn" :root)
    (cp-res "user.clj" :dev))
+
+  (add-dep {'http-kit {:mvn/version "2.1.19"}})
+
+
+  (->> (load-edn-res "deps.edn")
+      (merge-with into {:deps {'http-kit {:mvn/version "2.1.19"}}}))
 
   (io/resource "deps.edn")
 
