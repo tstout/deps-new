@@ -88,10 +88,10 @@
                       io/reader 
                       slurp
                       edn/read-string)]
-    (->> deps 
-         (merge-with into {:deps dep})
-         pp-code
-         (spit "./deps.edn"))
+    (as-> deps d 
+         (merge-with into {:deps dep} d)
+         (pp-code d :suppress-ns false)
+         (spit "./deps.edn" d))
     (throw (Exception. "Could not find ./deps.edn"))))
 
 
@@ -120,12 +120,6 @@
                    res
                    io/resource
                    slurp))
-
-  (io/resource "user.clj")
-
-
-  (time (merge {:a 1} {:b 2}))
-
 
   (io/make-parents (str root "/test/test-dir1/test-dir2/test-dir3"))
 
