@@ -61,7 +61,8 @@
   (->> prj
        gen-main
        (apply str)
-       (spit (gen-file prj :src "core.clj"))))
+       (spit (gen-file prj :src "core.clj")))
+  prj)
 
 (defn mk-dirs [root ns-name]
   (let [dirs (prj-dirs root ns-name)]
@@ -82,46 +83,40 @@
     (io/copy in out)
     prj))
 
-(defn add-dep [dep]
-  (if-let [deps (some-> "./deps.edn" 
-                      io/resource 
-                      io/reader 
-                      slurp
-                      edn/read-string)]
-    (as-> deps d 
-         (merge-with into {:deps dep} d)
-         (pp-code d :suppress-ns false)
-         (spit "./deps.edn" d))
-    (throw (Exception. "Could not find ./deps.edn"))))
+(defn merge-into-deps-edn
+  "Mege data into a deps.edn file and save the result."
+  ([x file]
+   (if-let [deps (some-> file
+                         ;io/resource
+                         io/reader
+                         slurp
+                         edn/read-string)]
+     (as-> deps d
+       (merge-with into x d)
+       (pp-code d :suppress-ns false)
+       (spit file d))
+     (throw (Exception. (str "Could not find " file)))))
+  ([x]
+   (merge-into-deps-edn x "./deps.edn")))
 
+(defn write-main-alias [prj]
+  (let [main-ns (-> :namespaces prj :ns-org)
+        main-ns-key (keyword main-ns)
+        deps-edn (-> :dirs prj :root (str "/deps.edn"))]
+    (merge-into-deps-edn
+     {:aliases {main-ns-key
+                {:main-opts ["-m" (str main-ns ".core")]}}}
+     deps-edn)))
 
 (comment
   (def root (str (System/getProperty "user.home") "/test-prj"))
   (def dirs (prj-dirs root "foo.bar-t"))
 
-  (some-> "./deps.edn" io/resource io/reader)
-
   (gen-file dirs :src "main.clj")
 
-  (->
-   (mk-dirs root "foo.bar-t")
-   (cp-res "deps.edn" :root)
-   (cp-res "user.clj" :dev))
+  (merge-into-deps-edn {:deps {'http-kit {:mvn/version "2.1.19"}}})
 
-  (add-dep {'http-kit {:mvn/version "2.1.19"}})
-
-
-  (->> (load-edn-res "deps.edn")
-      (merge-with into {:deps {'http-kit {:mvn/version "2.1.19"}}}))
-
-  (io/resource "deps.edn")
-
-  (macroexpand-1 '(->
-                   res
-                   io/resource
-                   slurp))
-
-  (io/make-parents (str root "/test/test-dir1/test-dir2/test-dir3"))
+  (merge-into-deps-edn {:aliases {:test-prj {:main-opts ["-m" "test-prj.core"]}}})
 
   (normalize-ns-name "corpname.deps-new")
 

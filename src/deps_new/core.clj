@@ -1,7 +1,7 @@
 (ns deps-new.core
   (:require [clojure.java.io :as io]
             [clojure.edn :as edn]
-            [deps-new.files :refer [mk-dirs cp-res write-main]]
+            [deps-new.files :refer [mk-dirs cp-res write-main write-main-alias]]
             [clojure.tools.cli :refer [parse-opts]])
   (:gen-class))
 
@@ -23,7 +23,8 @@
      (mk-dirs (str path "/" repo) namespace)
      (cp-res "deps.edn" :root)
      (cp-res "user.clj" :dev)
-     write-main)))
+     write-main
+     write-main-alias)))
 
 (defn -main [& args]
   (let [{:keys [options

@@ -24,7 +24,5 @@
   (->
    (mk-ns 'foo-bar :shell :java-io)
    pp-code)
-
-
   ;;
   )
