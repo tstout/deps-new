@@ -106,7 +106,8 @@
     (merge-into-deps-edn
      {:aliases {main-ns-key
                 {:main-opts ["-m" (str main-ns ".core")]}}}
-     deps-edn)))
+     deps-edn)
+    prj))
 
 (comment
   (def root (str (System/getProperty "user.home") "/test-prj"))
