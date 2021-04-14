@@ -14,8 +14,8 @@ Example usage:
 ```
 clj -M:deps-new -n gitlab-io -r gitlab-io
 ```
-This will create a project with a core namespace of gitlab-io. The repository name specified by -r
-is the gitlab-io, the same as the core namespace. This will create the following project structure:
+This will create a project with a core namespace of _gitlab-io_. The repository name specified by -r
+is _gitlab-io_, the same as the core namespace. This will create the following project structure:
 ```
 gitlab-io
 ├── deps.edn
