@@ -87,7 +87,7 @@
   "Mege data into a deps.edn file and save the result."
   ([x file]
    (if-let [deps (some-> file
-                         ;io/resource
+                         #_io/resource
                          io/reader
                          slurp
                          edn/read-string)]

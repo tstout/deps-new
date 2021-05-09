@@ -23,6 +23,7 @@
      (mk-dirs (str path "/" repo) namespace)
      (cp-res "deps.edn" :root)
      (cp-res "user.clj" :dev)
+     (cp-res ".gitignore" :root)
      write-main
      write-main-alias)))
 
