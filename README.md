@@ -31,5 +31,14 @@ gitlab-io
     │   └── core_test.clj
     └── resources
 ```
+Execute main:
+```
+clj -M:gitlab-io
+```
+
+Execute tests:
+```
+clj -M:test:runner
+```
 # TODO
 - include more detailed instructions

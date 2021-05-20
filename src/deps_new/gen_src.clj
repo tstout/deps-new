@@ -34,8 +34,6 @@
 (comment
   (require '[deps-new.files :refer [prj-dirs]])
 
-  (interpose)
-
   (def prj (prj-dirs
             (str (System/getProperty "user.home") "/test-prj")
             "foo.bar-t"))
