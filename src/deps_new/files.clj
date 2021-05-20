@@ -2,8 +2,8 @@
   (:require [clojure.java.io :as io]
             [clojure.string :as str]
             [clojure.edn :as edn]
-            [deps-new.codegen :refer [pp-code]]
-            [deps-new.gen-src :refer [gen-main]]))
+            [deps-new.pp :refer [pp-code]]
+            [deps-new.gen-src :refer [gen-main gen-test]]))
 
 (defn normalize-ns-name [ns-name]
   (-> ns-name
@@ -39,10 +39,10 @@
                   :ns-normalized n-ns}}))
 
 (defn gen-file
-  "Create a java.io file corresponding to path-key/fname"
-  [dirs path-key fname]
+  "Create a java.io file corresponding to path-key/fname for the specified project."
+  [prj path-key fname]
   (-> :dirs
-      dirs
+      prj
       path-key
       (str "/" fname)
       io/as-file))
@@ -64,13 +64,20 @@
        (spit (gen-file prj :src "core.clj")))
   prj)
 
+(defn write-test [prj]
+  (->> prj
+       gen-test
+       (apply str)
+       (spit (gen-file prj :test "core_test.clj")))
+  prj)
+
 (defn mk-dirs [root ns-name]
   (let [dirs (prj-dirs root ns-name)]
     (doseq [d (vals (:dirs dirs))]
       (io/make-parents (str d "/_")))
     dirs))
 
-;; TODO make a spec out of the dirs map.
+;; TODO make a spec out of the prj map.
 (defn cp-res [prj res-src dest]
   (let [in (-> res-src
                io/resource
@@ -87,7 +94,7 @@
   "Mege data into a deps.edn file and save the result."
   ([x file]
    (if-let [deps (some-> file
-                         ;io/resource
+                         #_io/resource
                          io/reader
                          slurp
                          edn/read-string)]

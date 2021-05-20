@@ -18,19 +18,18 @@ This will create a project with a core namespace of _gitlab-io_. The repository 
 is _gitlab-io_, the same as the core namespace. This will create the following project structure:
 ```
 gitlab-io
+├── .gitignore
 ├── deps.edn
 ├── dev
-│   └── user.clj
+│   └── user.clj
 ├── resources
 ├── src
-│   └── gitlab_io
-│       └── core.clj
+│   └── gitlab_io
+│       └── core.clj
 └── test
     ├── gitlab_io
+    │   └── core_test.clj
     └── resources
 ```
 # TODO
 - include more detailed instructions
-- Add funcitioning test template
-- Adjust formatting in main
-- remove unused deps in generated code

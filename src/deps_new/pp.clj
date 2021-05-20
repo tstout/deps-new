@@ -1,4 +1,4 @@
-(ns deps-new.codegen
+(ns deps-new.pp
   (:require [clojure.pprint :as pp]))
 
 (defn with-pp [f options]
@@ -31,6 +31,10 @@
    :suppress-ns false)
 
   (pp-code '(defn foo "A function for doing all kinds of things" [] (prn "hello") (prn "goodbye")))
+
+  (pp/pprint " ")
+
+  (str \newline)
 
   ;;
   )
