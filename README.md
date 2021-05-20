@@ -32,8 +32,4 @@ gitlab-io
     └── resources
 ```
 # TODO
-- Add git ingore
 - include more detailed instructions
-- Add funcitioning test template
-- Adjust formatting in main
-- remove unused deps in generated code

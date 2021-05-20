@@ -13,13 +13,13 @@
    '(defn -main [& args] (println "hello world"))))
 
 (defn mk-test [code-vec]
-  (->> (conj
-        code-vec
-        '(defn setup [f] (f))
-        '(use-fixtures :once setup)
-        '(defexpect your-test-name
-           (expect 1 0)))
-       (interpose \newline)))
+  (conj
+   code-vec
+   '(defn setup [f] (f))
+   '(use-fixtures :once setup)
+   '(defexpect fix-me-I-fail
+      (expect 1 0))
+   '(comment "see https://github.com/clojure-expectations/clojure-test for examples")))
 
 ;;(use-fixtures :once dir-cleanup)))
 

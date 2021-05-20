@@ -1,7 +1,9 @@
 (ns deps-new.core
-  (:require [clojure.java.io :as io]
-            [clojure.edn :as edn]
-            [deps-new.files :refer [mk-dirs cp-res write-main write-test write-main-alias]]
+  (:require [deps-new.files :refer [mk-dirs
+                                    cp-res
+                                    write-main
+                                    write-test
+                                    write-main-alias]]
             [clojure.tools.cli :refer [parse-opts]])
   (:gen-class))
 
