@@ -6,7 +6,7 @@
   "Mapping of require dependencies available for use in ns form generation"
   {:java-io '[clojure.java.io :as io]
    :shell '[clojure.java.shell :as shell]
-   :test '[clojure.test :refer [use-fixtures]]
+   :test '[clojure.test :refer [use-fixtures run-tests]]
    :test-expectations '[expectations.clojure.test :refer [defexpect expect expecting]]
    :cli '[clojure.tools.cli :refer [parse-opts]]})
 

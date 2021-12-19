@@ -19,7 +19,10 @@
    '(use-fixtures :once setup)
    '(defexpect fix-me-I-fail
       (expect 1 0))
-   '(comment "see https://github.com/clojure-expectations/clojure-test for examples")))
+   '(comment
+      *e
+      (run-tests)
+      "see https://github.com/clojure-expectations/clojure-test for examples")))
 
 ;;(use-fixtures :once dir-cleanup)))
 
