@@ -1,6 +1,9 @@
 {:paths ["resources" "src"]
  :deps {org.clojure/tools.cli {:mvn/version "0.3.5"}}
- :aliases {:dev {:extra-paths ["dev"]}
+ :aliases {;; Run with clj -T:build function-in-build.clj
+           :build {:deps {io.github.clojure/tools.build {:git/tag "v0.8.1" :git/sha "7d40500"}}
+                   :ns-default build}
+           :dev {:extra-paths ["dev"]}
            :test
            {:extra-paths ["test" "test/resources"]
             :extra-deps {org.clojure/test.check {:mvn/version "0.10.0"}

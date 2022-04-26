@@ -13,7 +13,7 @@
 
 (defn pp-code
   "Pretty print code. Options include:
-   :suppress-ns    true/false  - Do not print namespaces (defautl true)
+   :suppress-ns    true/false  - Do not print namespaces (default true)
    :namespace-maps true/false  - Show map namespaces (default false)"
   [code & opts]
   (with-pp

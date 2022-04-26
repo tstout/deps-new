@@ -3,7 +3,9 @@
             [clojure.string :as str]
             [clojure.edn :as edn]
             [deps-new.pp :refer [pp-code]]
-            [deps-new.gen-src :refer [gen-main gen-test]]))
+            [deps-new.gen-src :refer [gen-main
+                                      gen-test
+                                      gen-build]]))
 
 (defn normalize-ns-name [ns-name]
   (-> ns-name
@@ -69,6 +71,13 @@
        gen-test
        (apply str)
        (spit (gen-file prj :test "core_test.clj")))
+  prj)
+
+(defn write-build [prj]
+  (->> prj
+       gen-build
+       (apply str)
+       (spit (gen-file prj :root "build.clj")))
   prj)
 
 (defn mk-dirs [root ns-name]

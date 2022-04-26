@@ -5,6 +5,12 @@
 (def requires
   "Mapping of require dependencies available for use in ns form generation"
   {:java-io '[clojure.java.io :as io]
+   :build '[clojure.tools.build.api :refer [delete
+                                            compile-clj
+                                            git-count-revs
+                                            create-basis
+                                            copy-dir
+                                            uber]]
    :shell '[clojure.java.shell :as shell]
    :test '[clojure.test :refer [use-fixtures run-tests]]
    :test-expectations '[expectations.clojure.test :refer [defexpect expect expecting]]
@@ -18,6 +24,11 @@
 (defn mk-ns [name & deps]
   [`(ns ~name
       (:require ~@(apply select-deps deps)))])
+
+(defn mk-main-ns [name & deps]
+  [`(ns ~name
+      (:require ~@(apply select-deps deps))
+      (:gen-class))])
 
 (comment
   (select-deps :java-io :shell)

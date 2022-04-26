@@ -1,7 +1,7 @@
 (ns deps-new.gen-src
   (:require [deps-new.pp :refer [pp-code]]
-            [deps-new.defn :refer [mk-main mk-test]]
-            [deps-new.ns :refer  [mk-ns]]))
+            [deps-new.defn :refer [mk-main mk-test mk-build]]
+            [deps-new.ns :refer  [mk-ns mk-main-ns]]))
 
 (defn gen-main
   "Create a collection of source code lines representing the main source file.
@@ -12,7 +12,7 @@
                    :ns-org
                    (str ".core")
                    symbol)]
-    (->> (mk-ns ns-org :cli)
+    (->> (mk-main-ns ns-org :cli)
          mk-main
          (map pp-code)
          (interpose \newline))))
@@ -30,6 +30,19 @@
          mk-test
          (map pp-code)
          (interpose \newline))))
+
+(defn gen-build
+  "Create a build.clj with typical build functions"
+  [prj]
+  (let [ns-org (-> :namespaces
+                   prj
+                   :ns-org
+                   symbol)]
+    (->> (mk-ns 'build :build)
+         (mk-build ns-org)
+         (map pp-code)
+         (interpose \newline))))
+
 
 (comment
   (require '[deps-new.files :refer [prj-dirs]])

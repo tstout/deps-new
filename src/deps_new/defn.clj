@@ -1,12 +1,5 @@
 (ns deps-new.defn)
 
-(defmacro mk-fn [name args body]
-  `(defn ~name [~@args]
-     ~body))
-
-(defn mk-defn [name args body]
-  `(mk-fn ~name ~args ~body))
-
 (defn mk-main [code-vec]
   (conj
    code-vec
@@ -24,11 +17,37 @@
       (run-tests)
       "see https://github.com/clojure-expectations/clojure-test for examples")))
 
-;;(use-fixtures :once dir-cleanup)))
+(defn mk-build [ns-org code-vec]
+  (conj
+   code-vec
+   '(def version (format "1.0.%s" (b/git-count-revs nil)))
+   '(def class-dir "target/classes")
+   '(def basis (b/create-basis {:project "deps.edn"}))
+   (-> `(def uber-file (format "target/%s-%s.jar" ~(name ns-org) version))
+       list
+       first)
 
+   '(defn clean [_]
+      (b/delete {:path "target"}))
+
+   (-> `(defn uberjar [_]
+          (clean nil)
+          (b/copy-dir {:src-dirs ["src" "resources"]
+                       :target-dir class-dir})
+          (b/compile-clj {:basis basis
+                          :src-dirs ["src"]
+                          :class-dir class-dir})
+          (b/uber {:class-dir class-dir
+                   :uber-file uber-file
+                   :basis basis
+                   :main (symbol ~(str ns-org ".core"))}))
+       list
+       first)))
 
 (comment
   (mk-test [])
   (mk-main [])
+  (mk-build 'ns-org2 [])
+
   ;;
   )
