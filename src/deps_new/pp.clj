@@ -36,5 +36,12 @@
 
   (str \newline)
 
+  (pp/pprint #{1 2 3})
+  (pp/pprint '(1 2 3))
+  (pp/pprint [1 2 3])
+
+
+  ()
+
   ;;
   )

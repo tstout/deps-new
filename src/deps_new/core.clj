@@ -34,7 +34,7 @@
 
 (defn -main [& args]
   (let [{:keys [options
-                _ #_arguments
+                #_arguments
                 summary
                 errors]} (parse-opts args cli-options)]
     (cond
