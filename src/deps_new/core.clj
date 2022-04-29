@@ -3,7 +3,8 @@
                                     cp-res
                                     write-main
                                     write-test
-                                    write-main-alias]]
+                                    write-main-alias
+                                    write-build]]
             [clojure.tools.cli :refer [parse-opts]])
   (:gen-class))
 
@@ -28,11 +29,12 @@
      (cp-res ".gitignore" :root)
      write-main
      write-main-alias
-     write-test)))
+     write-test
+     write-build)))
 
 (defn -main [& args]
   (let [{:keys [options
-                _ #_arguments
+                #_arguments
                 summary
                 errors]} (parse-opts args cli-options)]
     (cond

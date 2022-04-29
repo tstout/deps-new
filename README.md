@@ -20,18 +20,22 @@ is _gitlab-io_, the same as the core namespace. This will create the following p
 ```
 gitlab-io
 ├── .gitignore
+├── build.clj
 ├── deps.edn
 ├── dev
-│   └── user.clj
+│   └── user.clj
 ├── resources
 ├── src
-│   └── gitlab_io
-│       └── core.clj
+│   └── gitlab_io
+│       └── core.clj
 └── test
     ├── gitlab_io
-    │   └── core_test.clj
+    │   └── core_test.clj
     └── resources
 ```
+
+The generated project supports the following:
+
 Execute main:
 ```
 clj -M:gitlab-io
@@ -41,5 +45,16 @@ Execute tests:
 ```
 clj -M:test:runner
 ```
-# TODO
-- include more detailed instructions
+
+Build Uberjar:
+```
+clj -T:build uberjar
+```
+
+Options when running deps-new:
+```
+  -n, --namespace NS       Project root namespace (required)
+  -p, --path RP         .  Specify root path
+  -r, --repo repo-name     Repository Name (required)
+  -h, --help
+```
