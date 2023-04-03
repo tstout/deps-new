@@ -7,8 +7,8 @@ Add this to your :aliases in ~/.clojure/deps.edn
 :deps-new {:extra-deps
                       {deps-new/deps-new
                        {:git/url "https://github.com/tstout/deps-new"
-                        :sha "d64cf18"
-                        :tag "v1.0.38"}}
+                        :sha "f331a5f"
+                        :tag "v1.0.39"}}
                       :main-opts ["-m" "deps-new.core"]}
 ```
 Example usage:
